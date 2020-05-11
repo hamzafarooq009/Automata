@@ -3,23 +3,51 @@ import ply.yacc as yacc
 import sys
 
 tokens = [
-
+    
     'INT',
-    'FLOAT',
-    'NAME',
-    'PLUS',
-    'MINUS',
-    'DIVIDE',
-    'MULTIPLY',
-    'EQUALS',
-
-
-    
-    
     'DOUBLE',
     'CHAR',
     'STRING',
     'BOOL',
+
+    'DISPLAY',#Display
+    'ASSIGN',#=
+    'COMMA',#,
+    
+    #expressions
+    'PLUS',#+
+    'MINUS',#-
+    'DIVIDE',#/
+    'MULTIPLY',#*
+    'POW',#^
+    'PERCENTAGE',#%
+    'PLUSPLUS',#++
+    'MINUSMINUS',#--
+
+    #logical operators
+    'LESSTHAN', #<
+    'GREATERTHAN', #>
+    'LESSEQUAL', #<=
+    'GREATEREQUAL', #>=
+    'NOTEQUAL',#!=
+    'EQUALS',#==
+    'NOT',#NOT
+    'AND',#AND
+    'OR',#OR
+
+    #NESTED PARATHESIS
+    'RSQBRAC',#]
+    'LSQBRAC',#[
+    'RCURLY', # }
+    'LROUND', # (
+    'RROUND', # )
+    'LCURLY', # {
+    
+    #type
+    'TYPE', #int double string char bool
+    'NAME', #variable name
+    'DOT', #end of line
+    'FUNC', #FUNCTION NAME
 
 ]
 
@@ -28,6 +56,16 @@ t_MINUS = r'\-'
 t_DIVIDE = r'\/'
 t_MULTIPLY = r'\*'
 t_EQUALS = r'\='
+t_LESSTHAN = r'\<'
+t_GREATERTHAN = r'\>'
+t_LESSEQUAL = r'\<='
+t_GREATEREQUAL = r'\>='
+t_NOTEQUAL = r'\!='
+t_EQUALS = r'\=='
+t_NOT = r'\NOT'
+t_AND = r'\AND'
+t_OR = r'\OR'
+
 
 t_ignore = r' '#ignoring spaces
 
