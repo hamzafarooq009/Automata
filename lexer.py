@@ -36,10 +36,10 @@ def t_INT(t):
     t.value = int(t.value)
     return t
 
-def t_FLOAT(t):
-    r'\d+'
-    t.value = float(t.value)
-    return t
+# def t_FLOAT(t):
+#     r'\d+'
+#     t.value = float(t.value)
+#     return t
 
 def t_DOUBLE(t):
     r'\d+\.\d+' #any character followed by a dot and zero or many characters
