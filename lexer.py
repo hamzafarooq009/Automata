@@ -58,17 +58,18 @@ tokens = [
     'NEWLINE',
 ]
 t_SEMICOLON = r'\;'
+t_PLUSPLUS = r'\+\+'
+t_MINUSMINUS = r'\-\-'
+
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_DIVIDE = r'\/'
 t_MULTIPLY = r'\*'
 t_POW = r'\^'
 t_PERCENTAGE = r'\%'
-t_PLUSPLUS = r'\++'
-t_MINUSMINUS = r'\--'
 
 
-t_ASSIGN = r'='
+t_ASSIGN = r'\='
 t_LESSTHAN = r'\<'
 t_GREATERTHAN = r'\>'
 t_LESSEQUAL = r'\<\='
@@ -86,9 +87,9 @@ t_ignore = r' '#ignoring spaces
 t_RSQBRAC = r'\]'
 t_LSQBRAC = r'\['
 t_RCURLY = r'\}'
-t_LROUND = r'\{'
+t_LCURLY = r'\{'
 t_RROUND = r'\)'
-t_LCURLY = r'\('
+t_LROUND = r'\('
 
 # token is a string with an assigned and thus identified meaning
 
@@ -103,7 +104,12 @@ def t_TYPE(token):
     return token
 
 def t_BOOL(token):
-    r'True|False'
+    r'true|false'
+    return token
+
+def t_DOUBLE(token):
+    r'\d+\.\d+' #any character followed by a dot and zero or many characters
+    token.value = float(token.value)
     return token
 
 def t_INT(token):
@@ -112,42 +118,30 @@ def t_INT(token):
     token.value = int(token.value)
     return token
 
-def t_DOUBLE(token):
-    r'\d+\.\d+' #any character followed by a dot and zero or many characters
-    token.value = float(token.value)
-    return token
-
-def t_STRING(token):
-    r'\"[a-zA-Z0-9_]+\"'
-    return token 
-
-def t_CHAR(token):
-    r'\'[a-zA-Z0-9_] \''
-    return token
-
-def t_DISPLAY(token):
-    r'display'
-    return token
-
 def t_IDENTIFIER(token):#variable function names
-    r'[a-zA-Z][A-Za-z_]*' 
+    r'[a-zA-Z][a-zA-Z0-9|_]*' 
     #[]contains a set of characters to match, [a-z]matches any alphabet from a-z
     #[a-zA-Z] matches characters from a-z and A-Z
     #a* a could be 0 or more time
     #a+ a could be 1 or more time
     return token
 
-def t_error(t):
+def t_STRING(token):
+    r'"[^"\n]*"'
+    return token 
+
+def t_CHAR(token):
+    r"'\\?[^']'"
+    return token
+
+def t_DISPLAY(token):
+    r'display'
+    return token
+
+    
+def t_error(token):
     print("illegal characters")
-    t.lexer.skip(1)
+    token.lexer.skip(1)
 
 # #LEXER TESTING
-# lexer = lex.lex()
-
-# lexer.input("{}[]()")
-
-# while True:
-#     tok = lexer.token()
-#     if not tok:
-#         break
-#     print(tok)
+lex.lex()

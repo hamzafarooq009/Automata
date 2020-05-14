@@ -1,0 +1,1019 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DOT
+    EQUALS
+    GREATEREQUAL
+    GREATERTHAN
+    LCURLY
+    LESSEQUAL
+    LESSTHAN
+    LSQBRAC
+    MINUSMINUS
+    NEWLINE
+    NOTEQUAL
+    PERCENTAGE
+    PLUSPLUS
+    POW
+    RCURLY
+    RSQBRAC
+
+Grammar
+
+Rule 0     S' -> element
+Rule 1     element -> stmt SEMICOLON
+Rule 2     stmt -> DISPLAY LROUND optparams RROUND
+Rule 3     optparams -> params
+Rule 4     optparams -> <empty>
+Rule 5     params -> exp COMMA params
+Rule 6     params -> exp
+Rule 7     stmt -> IDENTIFIER ASSIGN exp
+Rule 8     stmt -> TYPE IDENTIFIER
+Rule 9     stmt -> TYPE IDENTIFIER ASSIGN exp
+Rule 10    stmt -> exp
+Rule 11    exp -> LROUND exp RROUND
+Rule 12    exp -> IDENTIFIER
+Rule 13    exp -> STRING
+Rule 14    exp -> BOOL
+Rule 15    exp -> INT
+Rule 16    exp -> DOUBLE
+Rule 17    exp -> CHAR
+Rule 18    exp -> exp PLUS exp
+Rule 19    exp -> exp MINUS exp
+Rule 20    exp -> exp MULTIPLY exp
+Rule 21    exp -> exp DIVIDE exp
+Rule 22    exp -> NOT exp
+Rule 23    exp -> exp AND exp
+Rule 24    exp -> exp OR exp
+
+Terminals, with rules where they appear
+
+AND                  : 23
+ASSIGN               : 7 9
+BOOL                 : 14
+CHAR                 : 17
+COMMA                : 5
+DISPLAY              : 2
+DIVIDE               : 21
+DOT                  : 
+DOUBLE               : 16
+EQUALS               : 
+GREATEREQUAL         : 
+GREATERTHAN          : 
+IDENTIFIER           : 7 8 9 12
+INT                  : 15
+LCURLY               : 
+LESSEQUAL            : 
+LESSTHAN             : 
+LROUND               : 2 11
+LSQBRAC              : 
+MINUS                : 19
+MINUSMINUS           : 
+MULTIPLY             : 20
+NEWLINE              : 
+NOT                  : 22
+NOTEQUAL             : 
+OR                   : 24
+PERCENTAGE           : 
+PLUS                 : 18
+PLUSPLUS             : 
+POW                  : 
+RCURLY               : 
+RROUND               : 2 11
+RSQBRAC              : 
+SEMICOLON            : 1
+STRING               : 13
+TYPE                 : 8 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+element              : 0
+exp                  : 5 6 7 9 10 11 18 18 19 19 20 20 21 21 22 23 23 24 24
+optparams            : 2
+params               : 3 5
+stmt                 : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . element
+    (1) element -> . stmt SEMICOLON
+    (2) stmt -> . DISPLAY LROUND optparams RROUND
+    (7) stmt -> . IDENTIFIER ASSIGN exp
+    (8) stmt -> . TYPE IDENTIFIER
+    (9) stmt -> . TYPE IDENTIFIER ASSIGN exp
+    (10) stmt -> . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    DISPLAY         shift and go to state 3
+    IDENTIFIER      shift and go to state 5
+    TYPE            shift and go to state 7
+    LROUND          shift and go to state 4
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    element                        shift and go to state 1
+    stmt                           shift and go to state 2
+    exp                            shift and go to state 6
+
+state 1
+
+    (0) S' -> element .
+
+
+
+state 2
+
+    (1) element -> stmt . SEMICOLON
+
+    SEMICOLON       shift and go to state 14
+
+
+state 3
+
+    (2) stmt -> DISPLAY . LROUND optparams RROUND
+
+    LROUND          shift and go to state 15
+
+
+state 4
+
+    (11) exp -> LROUND . exp RROUND
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 16
+
+state 5
+
+    (7) stmt -> IDENTIFIER . ASSIGN exp
+    (12) exp -> IDENTIFIER .
+
+    ASSIGN          shift and go to state 18
+    PLUS            reduce using rule 12 (exp -> IDENTIFIER .)
+    MINUS           reduce using rule 12 (exp -> IDENTIFIER .)
+    MULTIPLY        reduce using rule 12 (exp -> IDENTIFIER .)
+    DIVIDE          reduce using rule 12 (exp -> IDENTIFIER .)
+    AND             reduce using rule 12 (exp -> IDENTIFIER .)
+    OR              reduce using rule 12 (exp -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 12 (exp -> IDENTIFIER .)
+
+
+state 6
+
+    (10) stmt -> exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    SEMICOLON       reduce using rule 10 (stmt -> exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 7
+
+    (8) stmt -> TYPE . IDENTIFIER
+    (9) stmt -> TYPE . IDENTIFIER ASSIGN exp
+
+    IDENTIFIER      shift and go to state 25
+
+
+state 8
+
+    (13) exp -> STRING .
+
+    PLUS            reduce using rule 13 (exp -> STRING .)
+    MINUS           reduce using rule 13 (exp -> STRING .)
+    MULTIPLY        reduce using rule 13 (exp -> STRING .)
+    DIVIDE          reduce using rule 13 (exp -> STRING .)
+    AND             reduce using rule 13 (exp -> STRING .)
+    OR              reduce using rule 13 (exp -> STRING .)
+    SEMICOLON       reduce using rule 13 (exp -> STRING .)
+    RROUND          reduce using rule 13 (exp -> STRING .)
+    COMMA           reduce using rule 13 (exp -> STRING .)
+
+
+state 9
+
+    (14) exp -> BOOL .
+
+    PLUS            reduce using rule 14 (exp -> BOOL .)
+    MINUS           reduce using rule 14 (exp -> BOOL .)
+    MULTIPLY        reduce using rule 14 (exp -> BOOL .)
+    DIVIDE          reduce using rule 14 (exp -> BOOL .)
+    AND             reduce using rule 14 (exp -> BOOL .)
+    OR              reduce using rule 14 (exp -> BOOL .)
+    SEMICOLON       reduce using rule 14 (exp -> BOOL .)
+    RROUND          reduce using rule 14 (exp -> BOOL .)
+    COMMA           reduce using rule 14 (exp -> BOOL .)
+
+
+state 10
+
+    (15) exp -> INT .
+
+    PLUS            reduce using rule 15 (exp -> INT .)
+    MINUS           reduce using rule 15 (exp -> INT .)
+    MULTIPLY        reduce using rule 15 (exp -> INT .)
+    DIVIDE          reduce using rule 15 (exp -> INT .)
+    AND             reduce using rule 15 (exp -> INT .)
+    OR              reduce using rule 15 (exp -> INT .)
+    SEMICOLON       reduce using rule 15 (exp -> INT .)
+    RROUND          reduce using rule 15 (exp -> INT .)
+    COMMA           reduce using rule 15 (exp -> INT .)
+
+
+state 11
+
+    (16) exp -> DOUBLE .
+
+    PLUS            reduce using rule 16 (exp -> DOUBLE .)
+    MINUS           reduce using rule 16 (exp -> DOUBLE .)
+    MULTIPLY        reduce using rule 16 (exp -> DOUBLE .)
+    DIVIDE          reduce using rule 16 (exp -> DOUBLE .)
+    AND             reduce using rule 16 (exp -> DOUBLE .)
+    OR              reduce using rule 16 (exp -> DOUBLE .)
+    SEMICOLON       reduce using rule 16 (exp -> DOUBLE .)
+    RROUND          reduce using rule 16 (exp -> DOUBLE .)
+    COMMA           reduce using rule 16 (exp -> DOUBLE .)
+
+
+state 12
+
+    (17) exp -> CHAR .
+
+    PLUS            reduce using rule 17 (exp -> CHAR .)
+    MINUS           reduce using rule 17 (exp -> CHAR .)
+    MULTIPLY        reduce using rule 17 (exp -> CHAR .)
+    DIVIDE          reduce using rule 17 (exp -> CHAR .)
+    AND             reduce using rule 17 (exp -> CHAR .)
+    OR              reduce using rule 17 (exp -> CHAR .)
+    SEMICOLON       reduce using rule 17 (exp -> CHAR .)
+    RROUND          reduce using rule 17 (exp -> CHAR .)
+    COMMA           reduce using rule 17 (exp -> CHAR .)
+
+
+state 13
+
+    (22) exp -> NOT . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 26
+
+state 14
+
+    (1) element -> stmt SEMICOLON .
+
+    $end            reduce using rule 1 (element -> stmt SEMICOLON .)
+
+
+state 15
+
+    (2) stmt -> DISPLAY LROUND . optparams RROUND
+    (3) optparams -> . params
+    (4) optparams -> .
+    (5) params -> . exp COMMA params
+    (6) params -> . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    RROUND          reduce using rule 4 (optparams -> .)
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    optparams                      shift and go to state 27
+    params                         shift and go to state 28
+    exp                            shift and go to state 29
+
+state 16
+
+    (11) exp -> LROUND exp . RROUND
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    RROUND          shift and go to state 30
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 17
+
+    (12) exp -> IDENTIFIER .
+
+    RROUND          reduce using rule 12 (exp -> IDENTIFIER .)
+    PLUS            reduce using rule 12 (exp -> IDENTIFIER .)
+    MINUS           reduce using rule 12 (exp -> IDENTIFIER .)
+    MULTIPLY        reduce using rule 12 (exp -> IDENTIFIER .)
+    DIVIDE          reduce using rule 12 (exp -> IDENTIFIER .)
+    AND             reduce using rule 12 (exp -> IDENTIFIER .)
+    OR              reduce using rule 12 (exp -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 12 (exp -> IDENTIFIER .)
+    COMMA           reduce using rule 12 (exp -> IDENTIFIER .)
+
+
+state 18
+
+    (7) stmt -> IDENTIFIER ASSIGN . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 31
+
+state 19
+
+    (18) exp -> exp PLUS . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 32
+
+state 20
+
+    (19) exp -> exp MINUS . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 33
+
+state 21
+
+    (20) exp -> exp MULTIPLY . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 34
+
+state 22
+
+    (21) exp -> exp DIVIDE . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 35
+
+state 23
+
+    (23) exp -> exp AND . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 36
+
+state 24
+
+    (24) exp -> exp OR . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 37
+
+state 25
+
+    (8) stmt -> TYPE IDENTIFIER .
+    (9) stmt -> TYPE IDENTIFIER . ASSIGN exp
+
+    SEMICOLON       reduce using rule 8 (stmt -> TYPE IDENTIFIER .)
+    ASSIGN          shift and go to state 38
+
+
+state 26
+
+    (22) exp -> NOT exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 22 (exp -> NOT exp .)
+    RROUND          reduce using rule 22 (exp -> NOT exp .)
+    COMMA           reduce using rule 22 (exp -> NOT exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+  ! PLUS            [ reduce using rule 22 (exp -> NOT exp .) ]
+  ! MINUS           [ reduce using rule 22 (exp -> NOT exp .) ]
+  ! MULTIPLY        [ reduce using rule 22 (exp -> NOT exp .) ]
+  ! DIVIDE          [ reduce using rule 22 (exp -> NOT exp .) ]
+  ! AND             [ reduce using rule 22 (exp -> NOT exp .) ]
+  ! OR              [ reduce using rule 22 (exp -> NOT exp .) ]
+
+
+state 27
+
+    (2) stmt -> DISPLAY LROUND optparams . RROUND
+
+    RROUND          shift and go to state 39
+
+
+state 28
+
+    (3) optparams -> params .
+
+    RROUND          reduce using rule 3 (optparams -> params .)
+
+
+state 29
+
+    (5) params -> exp . COMMA params
+    (6) params -> exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    COMMA           shift and go to state 40
+    RROUND          reduce using rule 6 (params -> exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 30
+
+    (11) exp -> LROUND exp RROUND .
+
+    PLUS            reduce using rule 11 (exp -> LROUND exp RROUND .)
+    MINUS           reduce using rule 11 (exp -> LROUND exp RROUND .)
+    MULTIPLY        reduce using rule 11 (exp -> LROUND exp RROUND .)
+    DIVIDE          reduce using rule 11 (exp -> LROUND exp RROUND .)
+    AND             reduce using rule 11 (exp -> LROUND exp RROUND .)
+    OR              reduce using rule 11 (exp -> LROUND exp RROUND .)
+    SEMICOLON       reduce using rule 11 (exp -> LROUND exp RROUND .)
+    RROUND          reduce using rule 11 (exp -> LROUND exp RROUND .)
+    COMMA           reduce using rule 11 (exp -> LROUND exp RROUND .)
+
+
+state 31
+
+    (7) stmt -> IDENTIFIER ASSIGN exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    SEMICOLON       reduce using rule 7 (stmt -> IDENTIFIER ASSIGN exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 32
+
+    (18) exp -> exp PLUS exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    PLUS            reduce using rule 18 (exp -> exp PLUS exp .)
+    MINUS           reduce using rule 18 (exp -> exp PLUS exp .)
+    AND             reduce using rule 18 (exp -> exp PLUS exp .)
+    OR              reduce using rule 18 (exp -> exp PLUS exp .)
+    SEMICOLON       reduce using rule 18 (exp -> exp PLUS exp .)
+    RROUND          reduce using rule 18 (exp -> exp PLUS exp .)
+    COMMA           reduce using rule 18 (exp -> exp PLUS exp .)
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+
+  ! MULTIPLY        [ reduce using rule 18 (exp -> exp PLUS exp .) ]
+  ! DIVIDE          [ reduce using rule 18 (exp -> exp PLUS exp .) ]
+  ! PLUS            [ shift and go to state 19 ]
+  ! MINUS           [ shift and go to state 20 ]
+  ! AND             [ shift and go to state 23 ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 33
+
+    (19) exp -> exp MINUS exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    PLUS            reduce using rule 19 (exp -> exp MINUS exp .)
+    MINUS           reduce using rule 19 (exp -> exp MINUS exp .)
+    AND             reduce using rule 19 (exp -> exp MINUS exp .)
+    OR              reduce using rule 19 (exp -> exp MINUS exp .)
+    SEMICOLON       reduce using rule 19 (exp -> exp MINUS exp .)
+    RROUND          reduce using rule 19 (exp -> exp MINUS exp .)
+    COMMA           reduce using rule 19 (exp -> exp MINUS exp .)
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+
+  ! MULTIPLY        [ reduce using rule 19 (exp -> exp MINUS exp .) ]
+  ! DIVIDE          [ reduce using rule 19 (exp -> exp MINUS exp .) ]
+  ! PLUS            [ shift and go to state 19 ]
+  ! MINUS           [ shift and go to state 20 ]
+  ! AND             [ shift and go to state 23 ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 34
+
+    (20) exp -> exp MULTIPLY exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    PLUS            reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    MINUS           reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    MULTIPLY        reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    DIVIDE          reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    AND             reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    OR              reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    SEMICOLON       reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    RROUND          reduce using rule 20 (exp -> exp MULTIPLY exp .)
+    COMMA           reduce using rule 20 (exp -> exp MULTIPLY exp .)
+
+  ! PLUS            [ shift and go to state 19 ]
+  ! MINUS           [ shift and go to state 20 ]
+  ! MULTIPLY        [ shift and go to state 21 ]
+  ! DIVIDE          [ shift and go to state 22 ]
+  ! AND             [ shift and go to state 23 ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 35
+
+    (21) exp -> exp DIVIDE exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    PLUS            reduce using rule 21 (exp -> exp DIVIDE exp .)
+    MINUS           reduce using rule 21 (exp -> exp DIVIDE exp .)
+    MULTIPLY        reduce using rule 21 (exp -> exp DIVIDE exp .)
+    DIVIDE          reduce using rule 21 (exp -> exp DIVIDE exp .)
+    AND             reduce using rule 21 (exp -> exp DIVIDE exp .)
+    OR              reduce using rule 21 (exp -> exp DIVIDE exp .)
+    SEMICOLON       reduce using rule 21 (exp -> exp DIVIDE exp .)
+    RROUND          reduce using rule 21 (exp -> exp DIVIDE exp .)
+    COMMA           reduce using rule 21 (exp -> exp DIVIDE exp .)
+
+  ! PLUS            [ shift and go to state 19 ]
+  ! MINUS           [ shift and go to state 20 ]
+  ! MULTIPLY        [ shift and go to state 21 ]
+  ! DIVIDE          [ shift and go to state 22 ]
+  ! AND             [ shift and go to state 23 ]
+  ! OR              [ shift and go to state 24 ]
+
+
+state 36
+
+    (23) exp -> exp AND exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 23 (exp -> exp AND exp .)
+    RROUND          reduce using rule 23 (exp -> exp AND exp .)
+    COMMA           reduce using rule 23 (exp -> exp AND exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+  ! PLUS            [ reduce using rule 23 (exp -> exp AND exp .) ]
+  ! MINUS           [ reduce using rule 23 (exp -> exp AND exp .) ]
+  ! MULTIPLY        [ reduce using rule 23 (exp -> exp AND exp .) ]
+  ! DIVIDE          [ reduce using rule 23 (exp -> exp AND exp .) ]
+  ! AND             [ reduce using rule 23 (exp -> exp AND exp .) ]
+  ! OR              [ reduce using rule 23 (exp -> exp AND exp .) ]
+
+
+state 37
+
+    (24) exp -> exp OR exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 24 (exp -> exp OR exp .)
+    RROUND          reduce using rule 24 (exp -> exp OR exp .)
+    COMMA           reduce using rule 24 (exp -> exp OR exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+  ! PLUS            [ reduce using rule 24 (exp -> exp OR exp .) ]
+  ! MINUS           [ reduce using rule 24 (exp -> exp OR exp .) ]
+  ! MULTIPLY        [ reduce using rule 24 (exp -> exp OR exp .) ]
+  ! DIVIDE          [ reduce using rule 24 (exp -> exp OR exp .) ]
+  ! AND             [ reduce using rule 24 (exp -> exp OR exp .) ]
+  ! OR              [ reduce using rule 24 (exp -> exp OR exp .) ]
+
+
+state 38
+
+    (9) stmt -> TYPE IDENTIFIER ASSIGN . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 41
+
+state 39
+
+    (2) stmt -> DISPLAY LROUND optparams RROUND .
+
+    SEMICOLON       reduce using rule 2 (stmt -> DISPLAY LROUND optparams RROUND .)
+
+
+state 40
+
+    (5) params -> exp COMMA . params
+    (5) params -> . exp COMMA params
+    (6) params -> . exp
+    (11) exp -> . LROUND exp RROUND
+    (12) exp -> . IDENTIFIER
+    (13) exp -> . STRING
+    (14) exp -> . BOOL
+    (15) exp -> . INT
+    (16) exp -> . DOUBLE
+    (17) exp -> . CHAR
+    (18) exp -> . exp PLUS exp
+    (19) exp -> . exp MINUS exp
+    (20) exp -> . exp MULTIPLY exp
+    (21) exp -> . exp DIVIDE exp
+    (22) exp -> . NOT exp
+    (23) exp -> . exp AND exp
+    (24) exp -> . exp OR exp
+
+    LROUND          shift and go to state 4
+    IDENTIFIER      shift and go to state 17
+    STRING          shift and go to state 8
+    BOOL            shift and go to state 9
+    INT             shift and go to state 10
+    DOUBLE          shift and go to state 11
+    CHAR            shift and go to state 12
+    NOT             shift and go to state 13
+
+    exp                            shift and go to state 29
+    params                         shift and go to state 42
+
+state 41
+
+    (9) stmt -> TYPE IDENTIFIER ASSIGN exp .
+    (18) exp -> exp . PLUS exp
+    (19) exp -> exp . MINUS exp
+    (20) exp -> exp . MULTIPLY exp
+    (21) exp -> exp . DIVIDE exp
+    (23) exp -> exp . AND exp
+    (24) exp -> exp . OR exp
+
+    SEMICOLON       reduce using rule 9 (stmt -> TYPE IDENTIFIER ASSIGN exp .)
+    PLUS            shift and go to state 19
+    MINUS           shift and go to state 20
+    MULTIPLY        shift and go to state 21
+    DIVIDE          shift and go to state 22
+    AND             shift and go to state 23
+    OR              shift and go to state 24
+
+
+state 42
+
+    (5) params -> exp COMMA params .
+
+    RROUND          reduce using rule 5 (params -> exp COMMA params .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 26 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 26 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 26 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 26 resolved as shift
+WARNING: shift/reduce conflict for AND in state 26 resolved as shift
+WARNING: shift/reduce conflict for OR in state 26 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 36 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 36 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 36 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 36 resolved as shift
+WARNING: shift/reduce conflict for AND in state 36 resolved as shift
+WARNING: shift/reduce conflict for OR in state 36 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 37 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 37 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 37 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 37 resolved as shift
+WARNING: shift/reduce conflict for AND in state 37 resolved as shift
+WARNING: shift/reduce conflict for OR in state 37 resolved as shift
