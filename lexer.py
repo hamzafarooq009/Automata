@@ -50,6 +50,17 @@ tokens = [
     'LCURLY', # {
     'DOT', #.
     
+    #if elseif else
+    'IF',
+    'ELSEIF',
+    'ELSE',
+
+    #list functions
+    # 'LISTFUNCS',
+    'PUSH',
+    'POP',
+    'SLICE',
+    'INDEX',
     
     #type
     'TYPE', #int double string char bool
@@ -57,6 +68,7 @@ tokens = [
     'IDENTIFIER', #variable function name
     'NEWLINE',
 ]
+
 t_SEMICOLON = r'\;'
 t_PLUSPLUS = r'\+\+'
 t_MINUSMINUS = r'\-\-'
@@ -103,6 +115,24 @@ def t_TYPE(token):
     r'int|double|string|char|bool'
     return token
 
+###########################
+def t_PUSH(token):
+    r'push'
+    return token
+
+def t_POP(token):
+    r'pop'
+    return token
+
+def t_SLICE(token):
+    r'slice'
+    return token
+
+def t_INDEX(token):
+    r'index'
+    return token
+
+#############################3
 def t_BOOL(token):
     r'true|false'
     return token
@@ -116,6 +146,16 @@ def t_INT(token):
     r'\d+'
     #\d means matching digits from 0-9 and + means that could be 1 to many
     token.value = int(token.value)
+    return token
+
+def t_IF(token):
+    r'if'
+    return token
+def t_ELSEIF(token):
+    r'elseif'
+    return token
+def t_ELSE(token):
+    r'else'
     return token
 
 def t_IDENTIFIER(token):#variable function names
