@@ -23,8 +23,8 @@ import sys
 
 #env = (parent_pointer,dictionary)
 def env_lookup(env, var_name):
-    print("lookup_env: ", env)
-    print("variable name: ", var_name)
+    # print("lookup_env: ", env)
+    # print("variable name: ", var_name)
     if var_name in env: #do we have it?
         # return env[var_name]
         return env
@@ -78,38 +78,51 @@ def env_update(env, var_name, updated_value):
 #x = 2+2
 def eval_stmts(tree, env):
     print("env at the begining: ", env)
-    print("received tree in eval_stmts: ", tree)
+    # print("received tree in eval_stmts: ", tree)
     stmt_type = tree[0]
-    print(tree)
+    
     if stmt_type == "assign": #x = 5+4 # x = exp
         var_name = tree[1]
-        right_child_exp = tree[2]
+        exp = tree[2]
         #since we dont know about if the right child is an expression or a simple number
         #send it to eval_exp
         # eval_exp((2+4), env)
-        new_value = eval_exp(right_child_exp,env)
-
+        var_env = env_lookup(env, var_name)
+        new_env = eval_exp(exp,env)
+        # print("new_value: ", new_value)
+        # print("var_env: ", var_env)
+        
+        value = new_env['value']
+        v_type = new_env['type']
+        var_env[var_name]['value'] = value
+        var_env[var_name]['type'] = v_type
+        
+        # print("final env: ", returned_env)
+        # returned_env = env_update(returned_env,var_name,new_val)
+        # print("updated env: ", returned_env)
+            
         #new_value is returned need to change it in the environment
         #now there must be an env update to update the corresponding vals
-        env_update(env,var_name,new_value)
+        # updated_env = env_update(env,var_name,new_value)
+        print("var_env: ", var_env)
+        return var_env
     elif stmt_type == "display": #recheck
         # display_items = tree[1]
+        # (a(a(a(a))))
         print("tree : ", tree[1])
-
         result = ""
-        print(len(tree))
         for branch in tree[1]:
-            for leaf in branch:
-                returned_value = eval_exp(leaf,env)
-                print(returned_value)
-                result = result + str(returned_value['value']) + " "
-                print(result)
+            fetch = eval_exp(branch,env)
+            print(fetch)
+            result = result + str(fetch['value']) + " "
         print(result)
-    
+
+        
     elif stmt_type == "init": #int x, int x = 5, int x = 15+1
         # print("tree in init: ", tree)
         var_type = tree[1]
         var_name = tree[2]
+        expression = tree[3]
         # print("Initialization call: ", var_type, " ", var_name)
         returned_env = env_declare(env,var_name,var_type)
         if (tree[3] == None):
@@ -117,12 +130,19 @@ def eval_stmts(tree, env):
         else:
             #if its not none then it must be an expression, need to evaluate it
             # print("sending expression," , tree[3], " in eval_exp")
-            expression = tree[3] #a + b
-            print("returned env : ", returned_env)
-            new_val = eval_exp(expression,returned_env)
+            # print("returned env : ", returned_env)
+            new_env = eval_exp(expression,returned_env)
+            # print("new val init: ", new_env)
+            # print("returned_env: ", returned_env)
             # print("returned env from new value: ", new_val)
             #new value is returned, now need to update the env
-            returned_env = env_update(returned_env,var_name,new_val)
+            value = new_env['value']
+            v_type = new_env['type']
+            returned_env[var_name]['value'] = value
+            returned_env[var_name]['type'] = v_type
+            
+            print("final env: ", returned_env)
+            # returned_env = env_update(returned_env,var_name,new_val)
             # print("updated env: ", returned_env)
             return returned_env
             # print("updated_env: ", returned_env)
@@ -137,8 +157,11 @@ def eval_stmts(tree, env):
         # print("IN IF BLOCK: ", tree)
         #there will be three categories
         if_stmt = tree[1]
+        print("if_stmt: ", if_stmt)
         elseif_stmt = tree[2]
+        print("elseif_stmt: ", elseif_stmt)
         else_stmt = tree[3]
+        print("else_stmt: ", else_stmt)
         # print("elseifstmt: ", _stmt)
         # print()
         #4 scenerios
@@ -158,7 +181,7 @@ def eval_stmts(tree, env):
             # print("calling eval_stmts on elseif: ", elseif_stmt)
             
             #need to check ke we have elseif or not
-            if elseif_stmt[0] == 'elseif':
+            if elseif_stmt != []:
                 elseif_updated_env = eval_stmts(elseif_stmt,env)
                 if elseif_updated_env == None and else_stmt != []:
                     updated_env = eval_stmts(else_stmt,env)
@@ -166,7 +189,10 @@ def eval_stmts(tree, env):
                     return updated_env
                 else:
                     return None
-        
+            elif else_stmt != []:
+                updated_env = eval_stmts(else_stmt,env)
+                return updated_env
+
     elif stmt_type == "elseif":
         #2things expression and statement
         expression = tree[1]
@@ -207,13 +233,13 @@ def eval_stmts(tree, env):
 
 def eval_exp(tree,env):
     # print("aval_exp env: ", env)
-    print("tree in eval exp: ", tree)
+    # print("tree in eval exp: ", tree)
     node_type = tree[0]
     # print("node_type in eval_Exp: ", node_type)
     
     #expressions
     if node_type == "exp":
-        print("value in node_type == exp: ", tree)
+        # print("value in node_type == exp: ", tree)
         exp_tree = tree[1] #in this way skipping exp and running rest if the expression
         eval_exp(exp_tree, env)
 
@@ -222,7 +248,8 @@ def eval_exp(tree,env):
     #identifier
     elif node_type == "identifier":
         var_name = tree[1]
-        return env_lookup(env,var_name)
+        returned_env = env_lookup(env,var_name)
+        return returned_env[var_name]
         
     #arithmetic operations
     elif node_type == "plus":
@@ -250,9 +277,9 @@ def eval_exp(tree,env):
             print("added value and types\n", {'value' : (lc_value + rc_value), 'type': lc_type })
             # print(lc_value + rc_value)
             return {'value' : lc_value + rc_value, 'type': lc_type }
-        elif lc_type == "int" & rc_type == "double":
+        elif lc_type == "int" or rc_type == "double":
             return {'value' : float(lc_value + rc_value), 'type': rc_type }
-        elif lc_type == "double" & rc_type == 'int':
+        elif lc_type == "double" or rc_type == 'int':
             return {'value' : float(lc_value + rc_value), 'type': lc_type }
         elif lc_type == "bool" & rc_type == 'bool':
             print("cant add bools")
@@ -276,11 +303,11 @@ def eval_exp(tree,env):
         
         if lc_type == rc_type:
             return {'value' : lc_value - rc_value, 'type': lc_type }
-        elif lc_type == "int" & rc_type == 'double':
+        elif lc_type == "int" or rc_type == 'double':
             return {'value' : float(lc_value - rc_value), 'type': rc_type }
-        elif lc_type == "double" & rc_type == 'int':
+        elif lc_type == "double" or rc_type == 'int':
             return {'value' : float(lc_value - rc_value), 'type': lc_type }
-        elif lc_type == "bool" or rc_type == 'bool':
+        elif lc_type == "bool" and rc_type == 'bool':
             print("cant subtract bools")
         else:
             print("types does not match!")
@@ -299,9 +326,9 @@ def eval_exp(tree,env):
         
         if lc_type == rc_type:
             return {'value' : lc_value * rc_value, 'type': lc_type }
-        elif lc_type == "int" & rc_type == 'double':
+        elif lc_type == "int" or rc_type == 'double':
             return {'value' : float(lc_value * rc_value), 'type': rc_type }
-        elif lc_type == "double" & rc_type == 'int':
+        elif lc_type == "double" or rc_type == 'int':
             return {'value' : float(lc_value * rc_value), 'type': lc_type }
         elif lc_type == "bool" or rc_type == 'bool':
             print("cant multiply bools")
@@ -329,9 +356,9 @@ def eval_exp(tree,env):
         
         if lc_type == rc_type:
             return {'value' : lc_value / rc_value, 'type': lc_type }
-        elif lc_type == "int" & rc_type == 'double':
+        elif lc_type == "int" or rc_type == 'double':
             return {'value' : float(lc_value / rc_value), 'type': rc_type }
-        elif lc_type == "double" & rc_type == 'int':
+        elif lc_type == "double" or rc_type == 'int':
             return {'value' : float(lc_value / rc_value), 'type': lc_type }
         elif lc_type == "bool" or rc_type == 'bool':
             print("cant multiply bools")
@@ -391,6 +418,8 @@ def eval_exp(tree,env):
         updated_value = updated_value[1:-1]
         return {'value': updated_value, 'type': 'string'}
         
+
+    
     #boolian
     elif node_type == "GREATEREQUAL":
         left_child = eval_exp(tree[1], env)
@@ -520,6 +549,30 @@ def eval_exp(tree,env):
                 sliced = final_env[slice_object]
                 print("final in slice: ", sliced)
                 return sliced
+
+    elif node_type == "plusplus":
+        var_name = tree[1]
+        fetched_env = env_lookup(env, var_name)
+        value = fetched_env[var_name]['value']
+        value = value + 1
+        fetched_env[var_name]['value'] = value
+        print("updated env: ", fetched_env)
+        return fetched_env
+
+    elif node_type == "minusminus":
+        var_name = tree[1]
+        fetched_env = env_lookup(env, var_name)
+        value = fetched_env[var_name]['value']
+        value = value - 1
+        fetched_env[var_name]['value'] = value
+        print("updated env: ", fetched_env)
+        return fetched_env
+
+    elif node_type == "pow":
+        v1 = tree[1]
+        v2 = tree[2]
+        # print(v1,v2)
+        return {'value' : v1[1]**v2[1], 'type': v1[0]}
 
 def interpreter(trees, parent_env, env):
     #firstly need to initialize an enviroment

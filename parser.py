@@ -4,9 +4,19 @@ import ply.lex as lex
 tokens = lexer.tokens
 
 #setting up precedence to reduce the 
+# precedence = (
+#     ('left','PLUS','MINUS'),
+#     ('left','MULTIPLY','DIVIDE') #divide and multiply have higher precedence than PLUS and MINUS
+# )
+
 precedence = (
-    ('left','PLUS','MINUS'),
-    ('left','MULTIPLY','DIVIDE') #divide and multiply have higher precedence than PLUS and MINUS
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'LESSTHAN', 'LESSEQUAL', 'GREATERTHAN', 'GREATEREQUAL'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'MULTIPLY', 'DIVIDE'),
+    ('left', 'POW'),
+    ('right', 'NOT'),
 )
 
 #making grammer
@@ -19,12 +29,14 @@ def p_statement(p):
 
 #optparams could be an expression or statement as well 
 def p_stmt_display(p):
-    'stmt : DISPLAY LROUND optparams RROUND'
+    'stmt : DISPLAY LROUND params RROUND'
+    # print(p[3])
     p[0] = ("display", p[3])
     
 def p_optparams(p):
     'optparams : params'
     p[0] = p[1]
+    # p[0] = ("p_optparams: ", p[1])
     
 def p_optparams_empty(p):
     'optparams : '
@@ -33,15 +45,20 @@ def p_optparams_empty(p):
 #params could be exp
 def p_params(p):
     'params : exp l_comma params' 
-    # a.append(p[1])
-    # a.append(p[3])
-    p[0] = [p[1],p[3]]
+    p[0] = [p[1]] + p[3]
+    # p[0] = ("p_params: ", p[1]," ",p[3])
+    
     # p[0] = a
 
-def p_params_exp(p):
-    'params : exp'
-    p[0] = p[1]
+def p_params_empty(p):
+    'params : '
+    p[0] = []
 
+# def p_params_exp(p):
+#     'params : exp'
+#     p[0] = p[1]
+    # p[0] = ("p_params_exp: ", p[1])
+    
 #in order to use if elseif and else we need to make a compound statment
 '''
 IF ELSEIF ELSE////////////////////////////////////////////////
@@ -249,8 +266,6 @@ def p_exp_plus(p):
 def p_exp_plus_brac(p):
     'exp : LROUND exp PLUS exp RROUND'
     p[0] = ("plus", p[2], p[4])
-
-
 def p_exp_minus(p):
     'exp : exp MINUS exp'
     p[0] = ("minus", p[1], p[3])
@@ -269,6 +284,12 @@ def p_exp_and(p):
 def p_exp_or(p):
     'exp : exp OR exp'
     p[0] = ("or", p[1], p[3])
+def p_exp_plusplus(p):
+    'exp : IDENTIFIER PLUSPLUS'
+    p[0] = ("plusplus", p[1])
+def p_exp_minusminus(p):
+    'exp : IDENTIFIER MINUSMINUS'
+    p[0] = ("minusminus", p[1])
 
 #boolian
 def p_exp_lessthan(p):

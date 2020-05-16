@@ -26,7 +26,6 @@ tokens = [
     'DIVIDE',#/
     'MULTIPLY',#*
     'POW',#^
-    'PERCENTAGE',#%
     'PLUSPLUS',#++
     'MINUSMINUS',#--
 
@@ -78,7 +77,6 @@ t_MINUS = r'\-'
 t_DIVIDE = r'\/'
 t_MULTIPLY = r'\*'
 t_POW = r'\^'
-t_PERCENTAGE = r'\%'
 
 
 t_DOT = r'\.'
