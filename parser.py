@@ -21,27 +21,26 @@ def p_statement(p):
 def p_stmt_display(p):
     'stmt : DISPLAY LROUND optparams RROUND'
     p[0] = ("display", p[3])
-    print("display step 1 call: ", p[3])
     
 def p_optparams(p):
     'optparams : params'
     p[0] = p[1]
-    print("Main display1: ", p[1])
-
+    
 def p_optparams_empty(p):
     'optparams : '
     p[0] = []
-    print("Main display2: ", p[0])
-
+    
 #params could be exp
 def p_params(p):
-    'params : exp COMMA params'
-    p[0] = p[1] + p[3]
+    'params : exp l_comma params' 
+    # a.append(p[1])
+    # a.append(p[3])
+    p[0] = [p[1],p[3]]
+    # p[0] = a
 
 def p_params_exp(p):
     'params : exp'
     p[0] = p[1]
-    # print("hello: params")
 
 #in order to use if elseif and else we need to make a compound statment
 '''
@@ -114,30 +113,31 @@ def p_listcomma_empty(p):
 
 def p_listparams_int(p):
     'listparams : INT l_comma listparams'
-    p[0] = p[1]
+    p[0] = [p[1]] + p[3]
 
 def p_listparams_double(p):
     'listparams : DOUBLE l_comma listparams'
-    p[0] = p[1]
+    p[0] = [p[1]] + p[3]
 
 def p_listparams_string(p):
     'listparams : STRING l_comma listparams'
-    p[0] = p[1]
+    p[0] = [p[1]] + p[3]
 
+# p[0] = [p[1], p[3]]
 def p_listparams_char(p):
     'listparams : CHAR l_comma listparams'
-    p[0] = p[1]
+    p[0] = [p[1]] + p[3]
 
 def p_listparams_bool(p):
     'listparams : BOOL l_comma listparams'
-    p[0] = p[1]
+    p[0] = [p[1]] + p[3]
 
 def p_listparams_empty(p):
     'listparams : '
     p[0] = []
 #/////////////////////////////////////////////////////////////
 
-#a[optparams] to get the value a[1]
+#a[optparams] to get the value a[1] 
 def p_list_exp(p):
     'exp : IDENTIFIER LSQBRAC optparams RSQBRAC'
     p[0] = ('listindex', p[1], p[3])
@@ -161,17 +161,6 @@ def p_list_func_slice(p):
     'list_functions : SLICE LROUND sliceparams RROUND'
     p[0] = ('slice', p[3])
 
-def p_sliceparams(p):
-    'sliceparams : INT'
-    p[0] = (p[1],None)
-def p_sliceparams_comma(p):
-    'sliceparams : INT COMMA INT'
-    p[0] = (p[1],p[3])
-def p_sliceparams_empty(p):
-    'sliceparams : '
-    p[0] = (None, None)
-
-# a.index('hamza') gives index of 'hamza' in list a 
 def p_list_func_index(p):
     'list_functions : INDEX LROUND indexparams RROUND'
     p[0] = ('index', p[3])
@@ -180,9 +169,23 @@ def p_indexparams(p):
     'indexparams : exp'
     p[0] = ('exp', p[1])
 
+def p_sliceparams(p):
+    'sliceparams : INT'
+    p[0] = (p[1],None)
+
+def p_sliceparams_comma(p):
+    'sliceparams : INT COMMA INT'
+    p[0] = (p[1],p[3])
+
+def p_sliceparams_empty(p):
+    'sliceparams : '
+    p[0] = (None, None)
+
+# a.index('hamza') gives index of 'hamza' in list a 
+
 def p_pparams(p):
     'pparams : exp'
-    p[0] = ('exp', p[1])
+    p[0] = p[1]
 
 def p_pparams_empty(p):
     'pparams : '
@@ -243,7 +246,11 @@ def p_exp_plus(p):
     'exp : exp PLUS exp'
     p[0] = ("plus", p[1], p[3])
     # print("plus :", p[1], p[3])
-    
+def p_exp_plus_brac(p):
+    'exp : LROUND exp PLUS exp RROUND'
+    p[0] = ("plus", p[2], p[4])
+
+
 def p_exp_minus(p):
     'exp : exp MINUS exp'
     p[0] = ("minus", p[1], p[3])
@@ -291,13 +298,13 @@ def p_error(p):
     # print("lelel", p)
     print("Syntax Error in Input!")
 
-# myLexer = lex.lex(module=lexer)
-# myParser = yacc.yacc()
+myLexer = lex.lex(module=lexer)
+myParser = yacc.yacc()
 
-# while True:
-#     try:
-#         x = input('>>')
-#     except EOFError:
-#         break
-#     tuple = myParser.parse(x, lexer=myLexer)
-#     print(tuple)
+while True:
+    try:
+        x = input('>>')
+    except EOFError:
+        break
+    tuple = myParser.parse(x, lexer=myLexer)
+    print(tuple)

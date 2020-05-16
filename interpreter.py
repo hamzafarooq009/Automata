@@ -26,7 +26,8 @@ def env_lookup(env, var_name):
     print("lookup_env: ", env)
     print("variable name: ", var_name)
     if var_name in env: #do we have it?
-        return env[var_name] 
+        # return env[var_name]
+        return env
     elif var_name not in env: #if no parent exist in the env
         return None
     else: #if not in current env and global then check other envs
@@ -65,8 +66,11 @@ def env_update(env, var_name, updated_value):
         print(var_name," is not declared")
     
     #but if var exists in env tou value, type update kardo
-    else:   
+    else:
+        # print("var_env update: ", var_env)   
+        # print("updated_value: ", updated_value)
         var_env['type'] = updated_value['type']
+        # print("var_env in update: ", var_env)
         var_env['value'] = updated_value['value']
         # print(var_env)
         return var_env
@@ -74,9 +78,9 @@ def env_update(env, var_name, updated_value):
 #x = 2+2
 def eval_stmts(tree, env):
     print("env at the begining: ", env)
-    # print("received tree: ", tree)
+    print("received tree in eval_stmts: ", tree)
     stmt_type = tree[0]
-    
+    print(tree)
     if stmt_type == "assign": #x = 5+4 # x = exp
         var_name = tree[1]
         right_child_exp = tree[2]
@@ -88,8 +92,19 @@ def eval_stmts(tree, env):
         #new_value is returned need to change it in the environment
         #now there must be an env update to update the corresponding vals
         env_update(env,var_name,new_value)
-    elif stmt_type == "display":
-        pass
+    elif stmt_type == "display": #recheck
+        # display_items = tree[1]
+        print("tree : ", tree[1])
+
+        result = ""
+        print(len(tree))
+        for branch in tree[1]:
+            for leaf in branch:
+                returned_value = eval_exp(leaf,env)
+                print(returned_value)
+                result = result + str(returned_value['value']) + " "
+                print(result)
+        print(result)
     
     elif stmt_type == "init": #int x, int x = 5, int x = 15+1
         # print("tree in init: ", tree)
@@ -103,6 +118,7 @@ def eval_stmts(tree, env):
             #if its not none then it must be an expression, need to evaluate it
             # print("sending expression," , tree[3], " in eval_exp")
             expression = tree[3] #a + b
+            print("returned env : ", returned_env)
             new_val = eval_exp(expression,returned_env)
             # print("returned env from new value: ", new_val)
             #new value is returned, now need to update the env
@@ -174,75 +190,24 @@ def eval_stmts(tree, env):
         # print("returned value: ", returned_value)
         return returned_value
         
-    elif stmt_type == "list_initialization":
+    elif stmt_type == "list_initialization": #int a = [1,2]
         var_type = tree[1]
         var_name = tree[2]
         returned_env = env_declare(env,var_name,var_type)
+        print("returned_env list initialization: ", returned_env)
         if (tree[3] == None):
             pass
         else:
-            expression = tree[3] #[1,2,3,4]
-            #what if [1+2,3+2]given?
-            returned_env = env_update(returned_env,var_name,expression)
+            v_list = tree[3]
+            print("v_list: ", v_list)
+            returned_env[var_name]['value'] = v_list[0]
+            print("returned: ", returned_env)
             return returned_env
-
-    elif stmt_type == "listindex": #x[2], x[arg]        
-        var_name = tree[1]
-        arg = tree[2]
-
-        objlist = env_lookup(env, var_name)
-        #{value: [1,2,3], type: 'int'}
-        final_list = objlist['value']
-        final_index = final_list.index(arg)
-        # print("index: ", final_index)
     
-    elif stmt_type == "listfunc":
-        var_name = tree[1]
-        list_functions = tree[2]
-        func_name = list_functions[0]
-        list_params = list_functions[1]
-
-        if func_name == 'push':
-            env_list = env_lookup(env, var_name)
-            final_list = env_list['value'].push(list_params)
-            returned_env = env_update(env, var_name, final_list)
-    
-        elif func_name == 'pop': #
-            # default list(-1)
-            if list_params == 'no args':
-                env_list = env_lookup(env, var_name)
-                final_list = env_list['value'].pop()
-                returned_env = env_update(env, var_name, final_list)
-            else:
-                env_list = env_lookup(env, var_name)
-                final_list = env_list['value'].pop(list_params)
-                returned_env = env_update(env, var_name, final_list)
-
-        elif func_name == 'index':
-            env_list = env_lookup(env, var_name)
-            index = env_list['value'].index(list_params)
-            print("index is : ", index)
-        elif func_name == 'slice':
-            slice_params = tree[1]
-            start_index = slice_params[0]
-            end_index = slice_params[1]
-
-            if len(slice_params) == 0:
-                print("ERROR: TypeError: slice expected at least 1 arguments, got 0")
-            elif len(slice_params) == 1:
-                env_list = env_lookup(env, var_name)
-                final_list = env_list['value'].slice(start_index)
-                returned_env = env_update(env, var_name, final_list)
-            elif len(slice_params) == 2:
-                env_list = env_lookup(env, var_name)
-                final_list = env_list['value'].slice(start_index, end_index)
-                returned_env = env_update(env, var_name, final_list)
-
-
 
 def eval_exp(tree,env):
     # print("aval_exp env: ", env)
-    # print("tree: ", tree)
+    print("tree in eval exp: ", tree)
     node_type = tree[0]
     # print("node_type in eval_Exp: ", node_type)
     
@@ -261,18 +226,18 @@ def eval_exp(tree,env):
         
     #arithmetic operations
     elif node_type == "plus":
-        #receiving (('int', 1), ('int', 1))
+        print(tree)
         left_child = tree[1]
         right_child = tree[2]
-        print("left_child : ", left_child)
-        print("right_child : ", right_child)
+        # print("left_child : ", left_child)
+        # print("right_child : ", right_child)
 
         
         #need to run recursive call
         left_value = eval_exp(left_child,env)
-        print("left value in plus: ", left_value)
+        # print("left value in plus: ", left_value)
         right_value = eval_exp(right_child,env)
-        print("right value in plus: ", right_value)
+        # print("right value in plus: ", right_value)
 
         #now to add the left and right child
         lc_type, lc_value = left_value['type'], left_value['value']
@@ -280,8 +245,7 @@ def eval_exp(tree,env):
 
         #now need to check if the data type are okay to add or not
 
-        #{int,double,char,string,bool}
-        
+        #{int,double,char,string,bool} 
         if lc_type == rc_type:
             print("added value and types\n", {'value' : (lc_value + rc_value), 'type': lc_type })
             # print(lc_value + rc_value)
@@ -419,11 +383,12 @@ def eval_exp(tree,env):
         return {'value': updated_value, 'type': 'double'}
     elif node_type == "int":
         updated_value = int(tree[1])
-        print("updated value : ", updated_value)
+        # print("updated value : ", updated_value)
         return {'value': updated_value, 'type': 'int'}
     elif node_type == "string":
         updated_value = str(tree[1])
-        print("updated value : ", updated_value)
+        # print("updated value : ", updated_value)
+        updated_value = updated_value[1:-1]
         return {'value': updated_value, 'type': 'string'}
         
     #boolian
@@ -473,6 +438,89 @@ def eval_exp(tree,env):
         v_type = 'bool'
         return {'value': value, 'type': v_type}
     
+    elif node_type == "listindex": #x[2], x[arg]        
+        print("tree in list index: ", tree)
+        var_name = tree[1]
+        index = tree[2][1]
+
+        objlist = env_lookup(env, var_name)
+        # #{value: [1,2,3], type: 'int'}
+        v_list = objlist['value']
+        value_at_index = v_list[index]
+        print("index: ", value_at_index)
+
+    elif node_type == "listfunc":
+        var_name = tree[1]
+        list_functions = tree[2]
+        func_name = list_functions[0]
+        list_params = list_functions[1]
+
+        if func_name == 'push':
+            print("in push bbay")
+            env_list = env_lookup(env, var_name)
+            print("env list in push: ", env_list)
+            print("list params: ", list_params[1])
+            final_env = env_list[var_name]['value'].append(list_params[1])
+            print("final_returned_env push : ", final_env)
+            return final_env
+    
+        elif func_name == 'pop': #
+            print(tree)
+            var_name = tree[1]
+            list_functions = tree[2]
+            func_name = list_functions[0]
+            list_index = list_functions[1]
+
+            if list_params == 'no args':
+                env_list = env_lookup(env, var_name)
+                final_env = env_list[var_name]['value'].pop()
+                # returned_env = env_update(env, var_name, final_list)
+                return final_env
+            else:
+                env_list = env_lookup(env, var_name)
+                final_env = env_list[var_name]['value'].pop(list_index[1])
+                print("pooped value : ", final_env)
+                return final_env
+
+        elif func_name == 'index':
+            print("tree in index: ", tree)
+            var_name = tree[1]
+            list_functions = tree[2]
+            func_name = list_functions[0]
+            list_params = list_functions[1]
+
+            env_list = env_lookup(env, var_name)
+            env_index = env_list[var_name]['value'].index(list_params[1][1])
+            print("index is : ", env_index)
+            return env_index
+
+        elif func_name == 'slice':
+            print("tree in slice: ", tree)
+            var_name = tree[1]
+            list_functions = tree[2]
+            func_name = list_functions[0]
+            list_params = list_functions[1]
+            start_index = list_params[0]
+            end_index = list_params[1]
+
+            if start_index == None and end_index == None:
+                print("ERROR: TypeError: slice expected at least 1 arguments, got 0")
+            elif start_index != None and end_index == None:
+                env_list = env_lookup(env, var_name)
+                print("start index: ", start_index)
+                slice_object = slice(start_index)
+                final_env = env_list[var_name]['value']
+                sliced = final_env[slice_object]
+                print("final in slice: ", sliced)
+                return sliced
+            elif start_index != None and end_index != None:
+                env_list = env_lookup(env, var_name)
+                slice_object = slice(start_index, end_index)
+                final_env = env_list[var_name]['value']
+                sliced = final_env[slice_object]
+                print("final in slice: ", sliced)
+                return sliced
+
 def interpreter(trees, parent_env, env):
     #firstly need to initialize an enviroment
     #in env we have parent pointer an a dictionary

@@ -81,6 +81,7 @@ t_POW = r'\^'
 t_PERCENTAGE = r'\%'
 
 
+t_DOT = r'\.'
 t_ASSIGN = r'\='
 t_LESSTHAN = r'\<'
 t_GREATERTHAN = r'\>'
@@ -88,7 +89,6 @@ t_LESSEQUAL = r'\<\='
 t_GREATEREQUAL = r'\>\='
 t_NOTEQUAL = r'\!\='
 t_EQUALS = r'\=\='
-t_DOT = r'\.'
 
 t_COMMA = r'\,'
 t_NOT = r'not'
@@ -113,6 +113,10 @@ def t_NEWLINE(token):#handle new lines
 
 def t_TYPE(token):
     r'int|double|string|char|bool'
+    return token
+
+def t_DISPLAY(token):
+    r'display'
     return token
 
 ###########################
@@ -172,10 +176,6 @@ def t_STRING(token):
 
 def t_CHAR(token):
     r"'\\?[^']'"
-    return token
-
-def t_DISPLAY(token):
-    r'display'
     return token
 
     
