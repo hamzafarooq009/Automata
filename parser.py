@@ -262,7 +262,7 @@ def p_exp_char(p):
 def p_exp_plus(p):
     'exp : exp PLUS exp'
     p[0] = ("plus", p[1], p[3])
-    # print("plus :", p[1], p[3])
+    #
 def p_exp_plus_brac(p):
     'exp : LROUND exp PLUS exp RROUND'
     p[0] = ("plus", p[2], p[4])
@@ -314,18 +314,22 @@ def p_exp_equal(p):
 def p_exp_power(p):
     'exp : exp POW exp'
     p[0] = ('pow', p[1], p[3])
-
+def p_neg_num(p):
+    'exp : MINUS INT'
+    # print("hell")
+    p[0] = ('neg_type', p[2])
+    
 def p_error(p):
     # print("lelel", p)
     print("Syntax Error in Input!")
 
-myLexer = lex.lex(module=lexer)
-myParser = yacc.yacc()
+# myLexer = lex.lex(module=lexer)
+# myParser = yacc.yacc()
 
-while True:
-    try:
-        x = input('>>')
-    except EOFError:
-        break
-    tuple = myParser.parse(x, lexer=myLexer)
-    print(tuple)
+# while True:
+#     try:
+#         x = input('>>')
+#     except EOFError:
+#         break
+#     tuple = myParser.parse(x, lexer=myLexer)
+#     print(tuple)

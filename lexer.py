@@ -88,11 +88,11 @@ t_GREATEREQUAL = r'\>\='
 t_NOTEQUAL = r'\!\='
 t_EQUALS = r'\=\='
 
+# t_NOT = r'not'
 t_COMMA = r'\,'
-t_NOT = r'not'
-t_AND = r'and'
-t_OR = r'or'
-t_ignore = r' '#ignoring spaces
+# t_AND = r'and'
+# t_OR = r'or'
+t_ignore = ' \n\t'#ignoring spaces
 
 t_RSQBRAC = r'\]'
 t_LSQBRAC = r'\['
@@ -102,12 +102,11 @@ t_RROUND = r'\)'
 t_LROUND = r'\('
 
 # token is a string with an assigned and thus identified meaning
-
-def t_NEWLINE(token):#handle new lines
-    r'\n'
-    #\n escapes endline
-    token.lexer.lineno += 1
-    pass
+# def t_NEWLINE(token):#handle new lines
+#     r'\n'
+#     #\n escapes endline
+#     token.lexer.lineno += 1
+#     pass
 
 def t_TYPE(token):
     r'int|double|string|char|bool'
@@ -135,8 +134,19 @@ def t_INDEX(token):
     return token
 
 #############################3
+def t_AND(token):
+    r'and'
+    return token
+def t_OR(token):
+    r'or'
+    return token
+
+def t_NOT(token):
+    r'not'
+    return token
+
 def t_BOOL(token):
-    r'true|false'
+    r'True|False'
     return token
 
 def t_DOUBLE(token):

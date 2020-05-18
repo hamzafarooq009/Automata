@@ -1,0 +1,5 @@
+bool isRaining = False;
+bool isSnowing = True;
+int temp = 0;
+if isRaining == True{if temp > 45{display("wear lw raincoat")} elseif temp == 45{display("wear f raincoat")} else{display("no war")}} elseif isSnowing != False{if temp>20{display("wssj")} elseif temp>=0 {display("wdj")} else{display("wbladj")}} else{display("lol")};
+
