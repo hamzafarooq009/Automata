@@ -1,0 +1,2 @@
+display(“s”);
+display(6.4, True, 2, “ok”);

@@ -315,7 +315,7 @@ def p_exp_power(p):
     'exp : exp POW exp'
     p[0] = ('pow', p[1], p[3])
 def p_neg_num(p):
-    'exp : MINUS INT'
+    'exp : MINUS exp'
     # print("hell")
     p[0] = ('neg_type', p[2])
     

@@ -92,7 +92,6 @@ t_EQUALS = r'\=\='
 t_COMMA = r'\,'
 # t_AND = r'and'
 # t_OR = r'or'
-t_ignore = ' \n\t'#ignoring spaces
 
 t_RSQBRAC = r'\]'
 t_LSQBRAC = r'\['
@@ -170,6 +169,14 @@ def t_ELSE(token):
     r'else'
     return token
 
+def t_STRING(token):
+    r'"[^"]*"'
+    return token 
+
+def t_CHAR(token):
+    r"'\\?[^']'"
+    return token
+
 def t_IDENTIFIER(token):#variable function names
     r'[a-zA-Z][a-zA-Z0-9|_]*' 
     #[]contains a set of characters to match, [a-z]matches any alphabet from a-z
@@ -178,18 +185,12 @@ def t_IDENTIFIER(token):#variable function names
     #a+ a could be 1 or more time
     return token
 
-def t_STRING(token):
-    r'"[^"\n]*"'
-    return token 
-
-def t_CHAR(token):
-    r"'\\?[^']'"
-    return token
-
     
 def t_error(token):
     print("illegal characters")
     token.lexer.skip(1)
+
+t_ignore = ' \n\t'#ignoring spaces
 
 # #LEXER TESTING
 lex.lex()

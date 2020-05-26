@@ -27,9 +27,10 @@ import os
 def env_lookup(env, var_name):
     try:
         if var_name in env: #do we have it?
-            # print(env)
+            # print("lookup: ", env)
             return env
         elif var_name not in env: #if no parent exist in the env
+            
             return None
         else: #if not in current env and global then check other envs
             return env_lookup(env[0],var_name)
@@ -79,8 +80,8 @@ def env_update(env, var_name, updated_value):
 
 #x = 2+2
 def eval_stmts(tree, env):
-    # print("env at the begining: ", env)
-    # print("received tree in eval_stmts: ", tree)
+    print("env at the begining: ", env)
+    print("received tree in eval_stmts: ", tree)
     stmt_type = tree[0]
     
     if stmt_type == "assign": #x = 5+4 # x = exp
@@ -122,7 +123,7 @@ def eval_stmts(tree, env):
         
     elif stmt_type == "init": #int x, int x = 5, int x = 15+1
         try:
-            # print("tree in init: ", tree)
+            print("tree in init: ", tree)
             var_type = tree[1]
             var_name = tree[2]
             expression = tree[3]
@@ -134,10 +135,12 @@ def eval_stmts(tree, env):
                 #if its not none then it must be an expression, need to evaluate it
                 new_env = eval_exp(expression,returned_env)
                 #new value is returned, now need to update the env
+                print("new_eve in INIT is : ", new_env)
                 value = new_env['value']
                 v_type = new_env['type']
                 returned_env[var_name]['value'] = value
                 returned_env[var_name]['type'] = v_type
+                # print("returnedenv: ", returned_env)
                 return returned_env
         except:
             print("Error in initialization")    
@@ -184,13 +187,10 @@ def eval_stmts(tree, env):
             #2things expression and statement
             expression = tree[1]
             statement = tree[2]
-            # print("expression : ", expression[1])
             returned_value = eval_exp(expression[1],env)
-            # print("returned value in elseif: ", returned_value)
             if returned_value['value'] == True:
-                # print("statement: ", statement)
+                print("statement: ", statement)
                 updated_env = eval_stmts(statement[1],env)
-                # print(updated_env)
                 return updated_env
             else:
                 return None
@@ -198,11 +198,8 @@ def eval_stmts(tree, env):
             print("Error in elseif block")
     elif stmt_type == "else":
         try:
-            # print(tree)
             statement = tree[1]
-            # print("statment in else: ", statement[1])
             returned_value = eval_stmts(statement[1],env)
-            # print("returned value: ", returned_value)
             return returned_value
         except:
             print("Error in else block")
@@ -210,15 +207,16 @@ def eval_stmts(tree, env):
         try:
             var_type = tree[1]
             var_name = tree[2]
+            print("list ini: ", tree)
             returned_env = env_declare(env,var_name,var_type)
-            # print("returned_env list initialization: ", returned_env)
+            print("returned in init", returned_env)
             if (tree[3] == None):
                 pass
             else:
                 v_list = tree[3]
                 # print("v_list: ", v_list)
                 returned_env[var_name]['value'] = v_list[0]
-                # print("returned: ", returned_env)
+                print("returned: ", returned_env)
                 return returned_env
         except:
             print("Error in list Initialization")
@@ -227,7 +225,6 @@ def eval_exp(tree,env):
     # print("aval_exp env: ", env)
     # print("tree in eval exp: ", tree)
     node_type = tree[0]
-    # print("node_type in eval_Exp: ", node_type)
     
     #expressions
     if node_type == "exp":
@@ -244,7 +241,7 @@ def eval_exp(tree,env):
             var_name = tree[1]
             # print(var_name)
             returned_env = env_lookup(env,var_name)
-            # print(returned_env)
+            # print("elo: ", returned_env)
             # print("RETURNED IN IDENTIFIER: ", returned_env[var_name])
             return returned_env[var_name]
         except:
@@ -252,11 +249,11 @@ def eval_exp(tree,env):
     #arithmetic operations
     elif node_type == "plus":
         try:
-            print("plus: ", tree)
+            # print("plus: ", tree)
             left_child = tree[1]
             right_child = tree[2]
-            print("left_child : ", left_child)
-            print("right_child : ", right_child)
+            # print("left_child : ", left_child)
+            # print("right_child : ", right_child)
 
             
             #need to run recursive call
@@ -273,10 +270,8 @@ def eval_exp(tree,env):
 
             #{int,double,char,string,bool} 
             if lc_type == rc_type:
-                # print("added value and types\n", {'value' : (lc_value + rc_value), 'type': lc_type })
-                # print(lc_value + rc_value)
                 if lc_type == 'string' and rc_type == 'string':
-                    return {'value' : lc_value[1:-1] + " " + rc_value[1:-1], 'type': lc_type }    
+                    return {'value' : lc_value + " " + rc_value, 'type': lc_type }    
                 else:
                     return {'value' : lc_value + rc_value, 'type': lc_type }
             elif lc_type == "int" or rc_type == "double":
@@ -291,14 +286,12 @@ def eval_exp(tree,env):
                 print("types does not match!")
                 raise Exception('Types mismatch')
         except:
-            print("Error in plus")
+            raise Exception('TypeError')
+            print("TypeError")
     elif node_type == "minus":
         try:
             left_child = tree[1]
             right_child = tree[2]
-            #need to run recursive call
-            print("lc: ", left_child)
-            print("rc: ", right_child)
             left_value = eval_exp(left_child,env)
             right_value = eval_exp(right_child,env)
 
@@ -330,12 +323,12 @@ def eval_exp(tree,env):
             right_child = tree[2]
             #need to run recursive call
             left_value = eval_exp(left_child,env)
+            # print("left child: ", left_value)
             right_value = eval_exp(right_child,env)
             #now to add the left and right child
             lc_type, lc_value = left_value['type'], left_value['value']
             rc_type, rc_value = right_value['type'], right_value['value']
             #now need to check if the data type are okay to add or not
-            #{int,double,char,string,bool}
             
             if lc_type == rc_type:
                 return {'value' : lc_value * rc_value, 'type': lc_type }
@@ -358,8 +351,6 @@ def eval_exp(tree,env):
             left_child = tree[1]
             right_child = tree[2]
             #need to run recursive call
-            print("lc: ", left_child)
-            print("rc: ", right_child)
             left_value = eval_exp(left_child,env)
             right_value = eval_exp(right_child,env)
 
@@ -369,7 +360,6 @@ def eval_exp(tree,env):
 
             #now need to check if the data type are okay to add or not
 
-            #{int,double,char,string,bool}
             
             if lc_type == rc_type:
                 return {'value' : lc_value / rc_value, 'type': lc_type }
@@ -389,7 +379,6 @@ def eval_exp(tree,env):
             print("Error in Division expression")
     elif node_type == "notequal":
         try:
-            # print("TREE IN NOTEQUAL: ", tree)
             exp1 = tree[1]
             exp2 = tree[2]
             
@@ -397,9 +386,7 @@ def eval_exp(tree,env):
             lc = eval_exp(exp1,env)
             rc = eval_exp(exp2,env)
             
-            # print("LC IN NOTEQUAL: ", lc)
-            # print("RC IN NOTEQUAL: ", rc)
-
+            
             if lc['value'] == 0:
                 updated_value = False != rc['value']
             elif lc['value'] == 1:
@@ -409,9 +396,7 @@ def eval_exp(tree,env):
             if rc['value'] == 1:
                 updated_value = lc['value'] != True
             
-            # print("UPDATED VALUE IN NOTEQUAL: ", updated_value)
             updated_type = 'bool'
-            # print('value', updated_value, "type", updated_type)
             
             return {'value': updated_value, 'type': updated_type }
         except:
@@ -419,7 +404,6 @@ def eval_exp(tree,env):
         
     elif node_type == "and":
         try:
-            # print("and mein tree: ", tree)
             left_tree = tree[1]
             right_tree = tree[2]
             lc = eval_exp(left_tree,env)
@@ -427,7 +411,6 @@ def eval_exp(tree,env):
             
             updated_value = lc and rc
             updated_type = 'bool'
-            # print("updated value in and : ", updated_value)
             return {'value': updated_value['value'] , 'type': updated_type}
         except:
             print("Error in And operation")
@@ -447,7 +430,6 @@ def eval_exp(tree,env):
     #types
     elif node_type == "bool":
         try:
-            # print("bool call: ", tree)
             value = tree[1]
             if value == 'True':
                 return {'value': True, 'type': 'bool'}
@@ -471,6 +453,7 @@ def eval_exp(tree,env):
     elif node_type == "string":
         try:
             updated_value = str(tree[1])
+            updated_value = updated_value[1:-1]
             # print("updated value : ", updated_value)
             # updated_value = updated_value[1:-1]
             return {'value': updated_value, 'type': 'string'}
@@ -545,6 +528,7 @@ def eval_exp(tree,env):
                 print("Index out of bound")
             else:
                 value_at_index = v_list[index[0]]
+                print("Value at index: ", value_at_index)
                 return {'value': value_at_index, 'type': 'int'}
         except:
             print("Error in list index")
@@ -552,20 +536,25 @@ def eval_exp(tree,env):
         
         var_name = tree[1]
         list_functions = tree[2]
+        # print("tree in list func: ", list_functions)
         func_name = list_functions[0]
         list_params = list_functions[1]
 
         if func_name == 'push':
-            print("in push bbay")
+            # print("in push bbay")
+            # print("var name: ", var_name)
+            # print("env in push: ",env)
             env_list = env_lookup(env, var_name)
-            # print("env list in push: ", env_list)
-            # print("list params: ", list_params[1])
-            final_env = env_list[var_name]['value'].append(list_params[1])
-            # print("final_returned_env push : ", final_env)
-            return final_env
+            print("env list in push: ", env_list)
+            
+            print("list params in push: ", list_params)
+            env_list[var_name]['value'].append(list_params[1])
+            # print(env_list[var_name]['value'])
+            print("final_returned_env push : ", env_list)
+            return env_list
     
         elif func_name == 'pop': #
-            # print(tree)
+            print("pop tree: ", tree)
             var_name = tree[1]
             list_functions = tree[2]
             func_name = list_functions[0]
@@ -573,29 +562,37 @@ def eval_exp(tree,env):
 
             if list_params == 'no args':
                 env_list = env_lookup(env, var_name)
-                final_env = env_list[var_name]['value'].pop()
+                env_list[var_name]['value'].pop()
                 # returned_env = env_update(env, var_name, final_list)
-                return {'value' : final_env, 'type': 'int'}
+                return {'value' : env_list, 'type': 'int'}
             else:
                 env_list = env_lookup(env, var_name)
-                final_env = env_list[var_name]['value'].pop(list_index[1])
-                print("pooped value : ", final_env)
+                value = env_list[var_name]['value'].pop(list_index[1])
+                print("pooped value : ", value)
                 v_type = env_list[var_name]['type']
-                print(v_type)
-                return {'value' : final_env, 'type': v_type}
+                print("v_type: ", value)
+                return {'value' : value, 'type': v_type}
 
         elif func_name == 'index':
+            print("tree in index: ", tree)
             try:
-                # print("tree in index: ", tree)
+                print("tree in index: ", tree)
                 var_name = tree[1]
                 list_functions = tree[2]
                 func_name = list_functions[0]
                 list_params = list_functions[1]
-
+                print("list params: ", list_params)
+                v_type = list_params[1][0]
+                v_value = list_params[1][1]
                 env_list = env_lookup(env, var_name)
-                env_index = env_list[var_name]['value'].index(list_params[1][1])
-                print("index is : ", env_index)
-                return {'value': env_index, 'type': 'int'}
+                if v_type == "string":
+                    v_value = v_value[1:-1]
+                    value = env_list[var_name]['value'].index(v_value)
+                    print("hello: ", value)
+                    return {'value': value, 'type': 'int'}
+                else: 
+                    value = env_list[var_name]['value'].index(list_params[1][1])
+                    return {'value': value, 'type': 'int'}
             except:
                 print("Error in index")
 
@@ -667,16 +664,22 @@ def eval_exp(tree,env):
         return {'value' : not var[1], 'type': var[0]}
     
     elif node_type == "neg_type":
-        # print(tree)
-        return {'value': (-1*tree[1]) , 'type': 'int'}
+        if tree[1][0] == "identifier":
+            var_name = tree[1][1]
+            returned_env = env_lookup(env,var_name)
+            # print("elo: ", returned_env)
+            return {'value': -1*returned_env[var_name]['value'], 'type': returned_env[var_name]['type']}
+        else:
+            # print("else return: ", tree[1])
+            return {'value': (-1*tree[1][1]) , 'type': tree[1][0]}
 
-def interpreter(trees, parent_env, env):
+def interpreter(trees, env):
     #firstly need to initialize an enviroment
     #in env we have parent pointer an a dictionary
     # print("interpreter tree: ", trees)
     try:
-        if parent_env is not None:
-            env[0] = parent_env
+        # if parent_env is not None:
+        #     env[0] = parent_env
         
         #have 2 option, one is being a statement and the other one is being an expression
         # for tree in trees:
@@ -696,26 +699,52 @@ def main():
     print ("Welcome to Motu Cato language")
     env = {}
 
-    # try:
-    #     with open(os.path.join("test_cases", sys.argv[1]), "r") as file:
-    #         data = file.read()
-    #         # print(data)
+    yaplParser = yacc.yacc(module = parser)
+    
+    parent = None
+    with open(os.path.join("test_cases", sys.argv[1]), "r") as file:
+        data = file.readlines()
+        for x in data:
+            try:
+                # print(x)
+                text = yaplParser.parse(x.strip())
+                # print(text)
+                interpreter(text,env)
+            except EOFError:
+                break
+        
+            # print(text)
+    # print(data)
+    # for x in data:
+    #     print(x);
+    # l = data.readline();
+    # for x in l:
+    #     print (x)
+    # parse_data = yaplParser.parse(data)
+    # interpreter(parse_data,None,env)
+    
+    # print(data)
     # except EOFError:
     #     print("error in file reading")
     # print(data)
-    # parse_data = yaplParser.parse(data) 
-    # print(parse_data)
+    # yaplParser = yacc.yacc(module = parser)
+    # for x in data:
+        # parse_data = yaplParser.parse(x)
+        # print(x)
     # for x in parse_data:
-    #     print(x)
-    #     interpreter(x,None,env)
+    #     print("x is : ", x)
+    # interpreter(parse_data,None,env)
     
-    yaplParser = yacc.yacc(module = parser)
-    while True:
-        try:
-            x = input('>> ')
-        except EOFError:
-            break
-        trees = yaplParser.parse(x)
+    # yaplParser = yacc.yacc(module = parser)
+    # while True:
+    #     trees = yaplParser.parse(data)
+    #     print(trees) 
+    # while True:
+    #     try:
+    #         x = input('>> ')
+    #     except EOFError:
+    #         break
+    #     trees = yaplParser.parse(x)
         
-        interpreter(trees, None,env)
+    #     interpreter(trees, None,env)
 main()

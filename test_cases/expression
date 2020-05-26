@@ -1,14 +1,13 @@
-string mystring = ("theory" + "of") + "automata";
-int a = 1;
-int b = 4;
+string mystring = "theory" + ("of" + "automata") + "315";
+int a = -6;
+int b = 2;
 b++;
 display(mystring);
-double c = (1.5 + 0.5 + 2);
+double c = (1.5-0.5+2);
 double determinant = b ^ 2 - 4 * a * c;
-double q_root1 = (-b + determinant^(1/2)) / (2.0*a));
-display(q_root1);
-
-bool d = False;
-display(not False == (not (not d)) and (True != 0);
+double quadratic_root1 = (-b + determinant^(1/2)) / ( 2.0*a );
+display(quadratic_root1);
+bool d = True;
+display(not True == (not (not d)) and (True != 0));
 display(4 + "A");
-display("hi");
+display("Hi");
